@@ -1,6 +1,5 @@
-package com.illegal.ecommerce.config;
+package com.illegal.ecommerce.security;
 
-import com.illegal.ecommerce.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

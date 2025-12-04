@@ -22,18 +22,16 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long expirationMs;
 
-    // Extrai o username (subject) do token
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Verifica se o token é válido
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    // Expiração
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -42,7 +40,6 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Extrai qualquer claim
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
