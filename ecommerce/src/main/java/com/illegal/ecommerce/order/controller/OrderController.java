@@ -1,9 +1,12 @@
 package com.illegal.ecommerce.order.controller;
 
+import com.illegal.ecommerce.order.dto.CheckoutRequestDTO;
+import com.illegal.ecommerce.order.dto.CheckoutResponseDTO;
 import com.illegal.ecommerce.order.dto.OrderRequestDTO;
 import com.illegal.ecommerce.order.dto.OrderResponseDTO;
 import com.illegal.ecommerce.order.service.OrderService;
 import com.illegal.ecommerce.user.model.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,4 +31,13 @@ public class OrderController {
     public List<OrderResponseDTO> listOrders(@AuthenticationPrincipal User user) {
         return service.listOrders(user);
     }
+
+    @PostMapping("/checkout")
+    public ResponseEntity<CheckoutResponseDTO> checkout(
+            @RequestBody CheckoutRequestDTO dto,
+            @AuthenticationPrincipal User user) {
+        CheckoutResponseDTO response = service.checkout(user, dto);
+        return ResponseEntity.ok(response);
+    }
+
 }

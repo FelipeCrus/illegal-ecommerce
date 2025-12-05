@@ -1,9 +1,6 @@
 package com.illegal.ecommerce.order.service;
 
-import com.illegal.ecommerce.order.dto.OrderItemDTO;
-import com.illegal.ecommerce.order.dto.OrderItemResponseDTO;
-import com.illegal.ecommerce.order.dto.OrderRequestDTO;
-import com.illegal.ecommerce.order.dto.OrderResponseDTO;
+import com.illegal.ecommerce.order.dto.*;
 import com.illegal.ecommerce.order.model.Order;
 import com.illegal.ecommerce.order.model.OrderItem;
 import com.illegal.ecommerce.order.repository.OrderRepository;
@@ -88,5 +85,14 @@ public class OrderService {
         }).collect(Collectors.toList());
     }
 
+    public CheckoutResponseDTO checkout(User user, CheckoutRequestDTO dto) {
+
+        OrderResponseDTO orderDTO = createOrder(user, new OrderRequestDTO(dto.items()));
+
+
+        String paymentStatus = "PAYMENT_PENDING";
+
+        return new CheckoutResponseDTO(orderDTO.id(), paymentStatus, orderDTO.total());
+    }
 
 }
