@@ -1,4 +1,4 @@
-package com.illegal.ecommerce.domain.model;
+package com.illegal.ecommerce.user.model;
 
 import jakarta.persistence.*;
 
