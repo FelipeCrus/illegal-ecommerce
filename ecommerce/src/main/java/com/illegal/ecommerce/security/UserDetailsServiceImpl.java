@@ -1,7 +1,7 @@
 package com.illegal.ecommerce.security;
 
-import com.illegal.ecommerce.domain.model.User;
-import com.illegal.ecommerce.domain.repository.UserRepository;
+import com.illegal.ecommerce.user.model.User;
+import com.illegal.ecommerce.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

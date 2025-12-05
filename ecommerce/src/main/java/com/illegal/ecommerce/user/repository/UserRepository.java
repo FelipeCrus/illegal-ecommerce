@@ -1,6 +1,6 @@
-package com.illegal.ecommerce.domain.repository;
+package com.illegal.ecommerce.user.repository;
 
-import com.illegal.ecommerce.domain.model.User;
+import com.illegal.ecommerce.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

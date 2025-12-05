@@ -1,7 +1,7 @@
 package com.illegal.ecommerce.user.service;
 
-import com.illegal.ecommerce.domain.model.User;
-import com.illegal.ecommerce.domain.repository.UserRepository;
+import com.illegal.ecommerce.user.model.User;
+import com.illegal.ecommerce.user.repository.UserRepository;
 import com.illegal.ecommerce.security.JwtService;
 import com.illegal.ecommerce.user.dto.*;
 
