@@ -1,6 +1,5 @@
 package com.illegal.ecommerce.product.controller;
 
-import com.illegal.ecommerce.product.dto.ProductRequestDTO;
 import com.illegal.ecommerce.product.dto.ProductResponseDTO;
 import com.illegal.ecommerce.product.service.ProductService;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +16,6 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping
-    public ProductResponseDTO createProduct(@RequestBody ProductRequestDTO dto) {
-        return service.createProduct(dto);
-    }
 
     @GetMapping
     public List<ProductResponseDTO> listProducts() {
@@ -30,16 +25,6 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductResponseDTO getProduct(@PathVariable Long id) {
         return service.getProduct(id);
-    }
-
-    @PutMapping("/{id}")
-    public ProductResponseDTO updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO dto) {
-        return service.updateProduct(id, dto);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        service.deleteProduct(id);
     }
 
 }

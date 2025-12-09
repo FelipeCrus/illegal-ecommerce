@@ -1,15 +1,13 @@
-package com.illegal.ecommerce.admin.controller;
+package com.illegal.ecommerce.user.controller;
 
-import com.illegal.ecommerce.user.model.Role;
-import com.illegal.ecommerce.user.model.User;
-import com.illegal.ecommerce.user.repository.UserRepository;
-
+import com.illegal.ecommerce.user.service.AdminUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import com.illegal.ecommerce.user.model.User;
 
 @RestController
 @RequestMapping("/admin/users")
@@ -17,33 +15,22 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminUserController {
 
-    private final UserRepository userRepository;
-
+    private final AdminUserService service;
 
     @GetMapping
     public ResponseEntity<List<User>> listAllUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+        return ResponseEntity.ok(service.listAllUsers());
     }
 
     @PostMapping("/promote/{id}")
     public ResponseEntity<String> promoteToAdmin(@PathVariable Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        user.setRole(Role.ROLE_ADMIN);
-        userRepository.save(user);
-
+        service.promoteToAdmin(id);
         return ResponseEntity.ok("Usuário promovido para ADMIN");
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        if (!userRepository.existsById(id)) {
-            return ResponseEntity.badRequest().body("Usuário não existe");
-        }
-
-        userRepository.deleteById(id);
+        service.deleteUser(id);
         return ResponseEntity.ok("Usuário deletado");
     }
 }

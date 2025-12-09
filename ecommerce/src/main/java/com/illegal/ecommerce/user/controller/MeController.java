@@ -1,14 +1,20 @@
 package com.illegal.ecommerce.user.controller;
 
+import com.illegal.ecommerce.user.dto.LoginRequest;
+import com.illegal.ecommerce.user.dto.LoginResponse;
+import com.illegal.ecommerce.user.dto.RegisterUserRequest;
+import com.illegal.ecommerce.user.dto.UserResponseDTO;
 import com.illegal.ecommerce.user.model.User;
 import com.illegal.ecommerce.user.repository.UserRepository;
 import com.illegal.ecommerce.user.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/me")
+@RequestMapping("/users")
 public class MeController {
 
     private final UserService userService;

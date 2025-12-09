@@ -1,13 +1,16 @@
 package com.illegal.ecommerce.user.controller;
 
 import com.illegal.ecommerce.user.dto.*;
+import com.illegal.ecommerce.user.model.User;
 import com.illegal.ecommerce.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+
 public class UserController {
 
     private final UserService userService;
@@ -27,4 +30,5 @@ public class UserController {
         LoginResponse response = userService.login(request);
         return ResponseEntity.ok(response);
     }
+
 }

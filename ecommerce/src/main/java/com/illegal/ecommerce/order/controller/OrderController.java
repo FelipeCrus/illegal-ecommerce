@@ -2,7 +2,6 @@ package com.illegal.ecommerce.order.controller;
 
 import com.illegal.ecommerce.order.dto.OrderResponseDTO;
 import com.illegal.ecommerce.order.service.OrderService;
-import com.illegal.ecommerce.user.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +19,18 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponseDTO>> listOrders(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(orderService.listOrders(user));
+    public ResponseEntity<List<OrderResponseDTO>> listOrders(
+            @AuthenticationPrincipal com.illegal.ecommerce.security.UserDetailsImpl details) {
+
+        return ResponseEntity.ok(orderService.listOrders(details.getUser()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable Long id) {
-        return ResponseEntity.ok(orderService.getOrderDtoById(id));
+    public ResponseEntity<OrderResponseDTO> getOrder(
+            @PathVariable Long id,
+            @AuthenticationPrincipal com.illegal.ecommerce.security.UserDetailsImpl details) {
+
+        return ResponseEntity.ok(orderService.getOrderDtoById(id, details.getUser()));
     }
 }
+

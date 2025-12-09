@@ -8,7 +8,6 @@ import com.illegal.ecommerce.security.UserDetailsImpl;
 import com.illegal.ecommerce.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +29,12 @@ public class PaymentController {
     }
 
 
-    @PostMapping("/confirm/{orderId}")
+    @PostMapping("/confirm/{id}")
     public ResponseEntity<OrderResponseDTO> confirmPayment(
-            @PathVariable Long orderId
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetailsImpl details
     ) {
-        return ResponseEntity.ok(paymentService.confirmPayment(orderId));
+        return ResponseEntity.ok(paymentService.confirmPayment(id, details.getUser()));
     }
 
     @PostMapping("/refund/{orderId}")
@@ -46,10 +46,4 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.requestRefundByCustomer(orderId, user));
     }
 
-
-    @PostMapping("/admin/refund/{orderId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<OrderResponseDTO> adminRefund(@PathVariable Long orderId) {
-        return ResponseEntity.ok(paymentService.adminRefund(orderId));
-    }
 }

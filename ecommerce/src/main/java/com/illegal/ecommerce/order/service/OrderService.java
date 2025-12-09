@@ -64,15 +64,31 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public OrderResponseDTO getOrderDtoById(Long id) {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
-        return OrderResponseDTO.fromOrder(order);
-    }
 
     public List<OrderResponseDTO> listOrders(User user) {
-        return orderRepository.findByUser(user).stream()
-                .map(OrderResponseDTO::fromOrder)
-                .collect(Collectors.toList());
+
+        if (!user.getRole().name().equals("ROLE_ADMIN")) {
+            return orderRepository.findByUserId(user.getId())
+                    .stream()
+                    .map(OrderResponseDTO::fromOrder)
+                    .collect(Collectors.toList());
+        }
+
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acesso negado");
+    }
+
+
+
+    public OrderResponseDTO getOrderDtoById(Long id, User user) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+
+        if (!user.getRole().name().equals("ROLE_ADMIN") &&
+                !order.getUser().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acesso negado");
+        }
+
+
+        return OrderResponseDTO.fromOrder(order);
     }
 }

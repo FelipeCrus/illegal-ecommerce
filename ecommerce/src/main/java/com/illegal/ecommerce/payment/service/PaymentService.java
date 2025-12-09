@@ -36,12 +36,19 @@ public class PaymentService {
         return new CheckoutResponseDTO(order.getId(), "PAYMENT_PENDING", order.getTotal());
     }
 
-    public OrderResponseDTO confirmPayment(Long orderId) {
+    public OrderResponseDTO confirmPayment(Long orderId, User user) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
 
+        boolean isAdmin = user.getRole().name().equals("ROLE_ADMIN");
+
+        if (!isAdmin && !order.getUser().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não pode confirmar o pedido de outro usuário.");
+        }
+
         if (order.getStatus() != OrderStatus.PENDING) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pagamento só pode ser confirmado quando o pedido está PENDING");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Pagamento só pode ser confirmado quando o pedido está PENDING");
         }
 
         order.setStatus(OrderStatus.PAID);
@@ -98,7 +105,6 @@ public class PaymentService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pedido já está cancelado/refund.");
         }
 
-        // regra de negócio: admin pode estornar pedidos SHIPPED/DELIVERED (ou PAID)
         if (order.getStatus() != OrderStatus.SHIPPED && order.getStatus() != OrderStatus.DELIVERED && order.getStatus() != OrderStatus.PAID) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Somente pedidos enviados/entregues/pagos podem ser estornados pela loja.");
         }
