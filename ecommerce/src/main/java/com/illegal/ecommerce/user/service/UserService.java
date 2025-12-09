@@ -1,5 +1,6 @@
 package com.illegal.ecommerce.user.service;
 
+import com.illegal.ecommerce.user.model.Role;
 import com.illegal.ecommerce.user.model.User;
 import com.illegal.ecommerce.user.repository.UserRepository;
 import com.illegal.ecommerce.security.JwtService;
@@ -30,6 +31,7 @@ public class UserService {
         user.setName(request.name());
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(Role.ROLE_USER);
 
         userRepository.save(user);
 
@@ -44,8 +46,38 @@ public class UserService {
             throw new RuntimeException("Senha inválida");
         }
 
-        String token = jwtService.generateToken(user.getEmail());
+        String token = jwtService.generateToken(user);
+
 
         return new LoginResponse(token);
     }
+
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
+    public User updateProfile(String email, User updated) {
+        User user = getByEmail(email);
+
+        user.setName(updated.getName());
+        user.setEmail(updated.getEmail());
+
+        return userRepository.save(user);
+    }
+
+    public void updatePassword(String email, String newPassword) {
+        User user = getByEmail(email);
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        userRepository.save(user);
+    }
+
+    public void delete(String email) {
+        User user = getByEmail(email);
+
+        userRepository.delete(user);
+    }
+
 }

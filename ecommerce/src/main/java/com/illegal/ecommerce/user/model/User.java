@@ -1,7 +1,6 @@
 package com.illegal.ecommerce.user.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,17 +25,17 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.ROLE_USER;
+    private Role role = Role.ROLE_USER; // padrão
 
-    public User() {
-    }
+    public User() {}
 
-    public User(Long id, String name, String email, String password, LocalDateTime createdAt) {
+    public User(Long id, String name, String email, String password, LocalDateTime createdAt, Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.createdAt = createdAt;
+        this.role = role;
     }
 
     public Long getId() { return id; }
@@ -54,11 +53,6 @@ public class User {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 }

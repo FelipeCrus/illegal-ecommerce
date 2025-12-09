@@ -9,20 +9,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class DataInitializer {
+public class AdminConfig {
 
     @Bean
-    CommandLineRunner init(UserRepository userRepository, PasswordEncoder encoder) {
+    public CommandLineRunner createAdmin(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         return args -> {
-            String adminEmail = "admin@illegal.com";
-            if (userRepository.findByEmail(adminEmail).isEmpty()) {
+            if (!userRepository.existsByEmail("admin@illegal.com")) {
                 User admin = new User();
-                admin.setName("Admin");
-                admin.setEmail(adminEmail);
-                admin.setPassword(encoder.encode("Admin123!"));
+                admin.setName("Administrador");
+                admin.setEmail("admin@illegal.com");
+                admin.setPassword(passwordEncoder.encode("123456"));
                 admin.setRole(Role.ROLE_ADMIN);
+
                 userRepository.save(admin);
-                System.out.println("Admin criado: " + adminEmail + " / senha: Admin123!");
+                System.out.println("ADMIN criado com sucesso.");
             }
         };
     }

@@ -16,11 +16,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> user.getRole().name());
+        return List.of((GrantedAuthority) () -> user.getRole().name());
     }
 
     @Override public String getPassword() { return user.getPassword(); }
     @Override public String getUsername() { return user.getEmail(); }
+
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
