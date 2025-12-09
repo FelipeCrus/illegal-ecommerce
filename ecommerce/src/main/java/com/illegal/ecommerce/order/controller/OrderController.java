@@ -1,8 +1,5 @@
 package com.illegal.ecommerce.order.controller;
 
-import com.illegal.ecommerce.order.dto.CheckoutRequestDTO;
-import com.illegal.ecommerce.order.dto.CheckoutResponseDTO;
-import com.illegal.ecommerce.order.dto.OrderRequestDTO;
 import com.illegal.ecommerce.order.dto.OrderResponseDTO;
 import com.illegal.ecommerce.order.service.OrderService;
 import com.illegal.ecommerce.user.model.User;
@@ -16,28 +13,19 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderService service;
+    private final OrderService orderService;
 
-    public OrderController(OrderService service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public OrderResponseDTO createOrder(@AuthenticationPrincipal User user, @RequestBody OrderRequestDTO dto) {
-        return service.createOrder(user, dto);
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @GetMapping
-    public List<OrderResponseDTO> listOrders(@AuthenticationPrincipal User user) {
-        return service.listOrders(user);
+    public ResponseEntity<List<OrderResponseDTO>> listOrders(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(orderService.listOrders(user));
     }
 
-    @PostMapping("/checkout")
-    public ResponseEntity<CheckoutResponseDTO> checkout(
-            @RequestBody CheckoutRequestDTO dto,
-            @AuthenticationPrincipal User user) {
-        CheckoutResponseDTO response = service.checkout(user, dto);
-        return ResponseEntity.ok(response);
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderDtoById(id));
     }
-
 }

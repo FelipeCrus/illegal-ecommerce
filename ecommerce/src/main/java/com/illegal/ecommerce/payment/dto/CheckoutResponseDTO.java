@@ -1,4 +1,4 @@
-package com.illegal.ecommerce.order.dto;
+package com.illegal.ecommerce.payment.dto;
 
 public record CheckoutResponseDTO(
         Long orderId,

@@ -1,4 +1,6 @@
-package com.illegal.ecommerce.order.dto;
+package com.illegal.ecommerce.payment.dto;
+
+import com.illegal.ecommerce.order.dto.OrderItemDTO;
 
 import java.util.List;
 

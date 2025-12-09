@@ -24,6 +24,9 @@ public class Order {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     public Long getId() {
         return id;
     }
@@ -64,5 +67,11 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    // Getters e setters
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
 }
