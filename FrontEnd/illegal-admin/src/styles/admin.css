@@ -1,0 +1,61 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+}
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+.admin-sidebar {
+  width: 220px;
+  background: #111;
+  color: #fff;
+  padding: 20px;
+}
+
+.admin-sidebar h2 {
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+
+.admin-sidebar nav a {
+  display: block;
+  color: #ccc;
+  text-decoration: none;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.admin-sidebar nav a:hover {
+  color: #fff;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 30px;
+}
+
+/* Tabela */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.orders-table th {
+  background: #fafafa;
+}
