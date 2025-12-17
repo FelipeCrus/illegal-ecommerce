@@ -6,4 +6,5 @@ export type User = {
   email: string
   role: UserRole
   createdAt: string
+  blocked: boolean
 }

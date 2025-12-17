@@ -7,15 +7,62 @@ export function UsersPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/admin/users')
-      .then(response => {
-        setUsers(response.data)
-      })
-      .catch(() => {
-        alert('Erro ao buscar usuários')
-      })
-      .finally(() => setLoading(false))
-  }, [])
+  api.get('/admin/users')
+    .then(response => {
+      const normalizedUsers = response.data.map((u: any) => ({
+        ...u,
+        role: u.role.replace('ROLE_', '') as 'USER' | 'ADMIN'
+      }))
+      setUsers(normalizedUsers)
+    })
+    .catch(() => alert('Erro ao buscar usuários'))
+    .finally(() => setLoading(false))
+}, [])
+
+
+
+  
+  async function handleToggleRole(userId: number) {
+    const user = users.find(u => u.id === userId)
+    if (!user) return
+
+
+    
+    const action = user.role === 'USER' ? 'promote' : 'demote'
+    const confirmed = window.confirm(
+      `Deseja realmente ${action === 'promote' ? 'promover' : 'despromover'} este usuário?`
+    )
+    if (!confirmed) return
+
+    try {
+      const response = await api.post(`/admin/users/${userId}/${action}`)
+      const updatedUser: User = response.data
+
+      setUsers(prev => prev.map(u => u.id === updatedUser.id ? { ...u, role: updatedUser.role } : u))
+    } catch (error: any) {
+      alert(error.response?.data?.message || 'Erro na operação')
+    }
+  }
+
+  async function handleToggleBlocked(userId: number) {
+    const user = users.find(u => u.id === userId)
+    if (!user) return
+
+    const action = user.blocked ? 'unblock' : 'block'
+    const confirmed = window.confirm(
+      `Deseja realmente ${user.blocked ? 'desbloquear' : 'bloquear'} este usuário?`
+    )
+    if (!confirmed) return
+
+    try {
+      const response = await api.post(`/admin/users/${userId}/${action}`)
+      const updatedUser: User = response.data
+
+      setUsers(prev => prev.map(u => u.id === updatedUser.id ? { ...u, blocked: updatedUser.blocked } : u))
+    } catch (error: any) {
+      alert(error.response?.data?.message || 'Erro na operação')
+    }
+  }
 
   return (
     <>
@@ -32,6 +79,7 @@ export function UsersPage() {
               <th>Email</th>
               <th>Role</th>
               <th>Criado em</th>
+              <th>Ações</th>
             </tr>
           </thead>
 
@@ -43,6 +91,14 @@ export function UsersPage() {
                 <td>{user.email}</td>
                 <td>{user.role}</td>
                 <td>{new Date(user.createdAt).toLocaleString()}</td>
+                <td>
+                  <button onClick={() => handleToggleRole(user.id)}>
+                    {user.role === 'USER' ? 'Promover' : 'Despromover'}
+                  </button>
+                  <button onClick={() => handleToggleBlocked(user.id)} style={{ marginLeft: '10px' }}>
+                    {user.blocked ? 'Desbloquear' : 'Bloquear'}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

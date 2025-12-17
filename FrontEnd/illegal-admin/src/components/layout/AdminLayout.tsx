@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
 import '../../styles/admin.css'
 
 export function AdminLayout() {
@@ -7,11 +7,17 @@ export function AdminLayout() {
       <aside className="admin-sidebar">
         <h2>Illegal Admin</h2>
 
-      <nav>
-        <a href="/admin/orders">Pedidos</a>
-        <a href="/admin/users">Usuários</a>
-      </nav>
-
+        <nav>
+          <NavLink to="orders" className={({ isActive }) => isActive ? 'active' : ''}>
+            Pedidos
+          </NavLink>
+          <NavLink to="users" className={({ isActive }) => isActive ? 'active' : ''}>
+            Usuários
+          </NavLink>
+          <NavLink to="products" className={({ isActive }) => isActive ? 'active' : ''}>
+            Produtos
+          </NavLink>
+        </nav>
       </aside>
 
       <main className="admin-content">

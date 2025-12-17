@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AdminLayout } from './components/layout/AdminLayout'
 import { OrdersPage } from './pages/admin/Orders/OrdersPage'
 import { UsersPage } from './pages/admin/Users/UsersPage'
+import { AdminProductsPage } from './pages/admin/Products/ProductsPage'
 import { LoginPage } from './pages/auth/Login/LoginPage'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="orders" element={<OrdersPage />} />
           <Route path="users" element={<UsersPage />} />
+          <Route path="products" element={<AdminProductsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
